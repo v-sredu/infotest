@@ -5,9 +5,9 @@ const ErrorAlert = ({ errors }) => {
 	if (!errors || errors.length === 0) return null;
 
 	return (
-		<div className="bg-red-100 text-red-800 p-4 rounded-lg" role="alert">
+		<div className="bg-red-100 text-red-800 p-4 rounded-lg my-2" role="alert">
 			{errors.map((error, index) => (
-				<p key={index} className="block text-sm font-medium max-sm:mt-2">
+				<p key={index} className="block text-sm font-medium">
 					{error}
 				</p>
 			))}

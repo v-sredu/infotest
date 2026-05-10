@@ -15,11 +15,10 @@ class AuthStudentController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => "required|string|max:20",
             "surname" => "required|string|max:20",
-            "id_group" => "required|exists:groups,id",
+            "group_id" => "required|exists:groups,id",
             "email" => "required|email|max:30|unique:students",
             "password" => "required|min:6|same:confirm_password",
         ]);
-
         if ($validator->fails()) {
             return response()->json(["errors" => $validator->errors()->all()], 422);
         }
@@ -28,7 +27,7 @@ class AuthStudentController extends Controller
             "name" => $request->name,
             "surname" => $request->surname,
             "email" => $request->email,
-            "id_group" => $request->id_group,
+            "group_id" => $request->group_id,
             "password" => Hash::make($request->password)
         ]);
 
@@ -38,7 +37,7 @@ class AuthStudentController extends Controller
                 'name' => $student->name,
                 'surname' => $student->surname,
                 'email' => $student->email,
-                'id_group' => $student->id_group,
+                'group_id' => $student->group_id,
                 'token' => $student->createToken('auth')->plainTextToken,
                 'role' => 'student'
             ],
@@ -70,7 +69,7 @@ class AuthStudentController extends Controller
                 'name' => $student->name,
                 'surname' => $student->surname,
                 'email' => $student->email,
-                'id_group' => $student->id_group,
+                'group_id' => $student->group_id,
                 'token' => $student->createToken('auth')->plainTextToken,
                 'role' => 'student'
             ],
@@ -89,7 +88,7 @@ class AuthStudentController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => "sometimes|nullable|string|max:20",
             "surname" => "sometimes|nullable|string|max:20",
-            "id_group" => "sometimes|nullable|exists:groups,id",
+            "group_id" => "sometimes|nullable|exists:groups,id",
             "email" => "sometimes|nullable|email|unique:students,email," . $student->id,
             "password" => "sometimes|nullable|min:6|same:confirm_password",
         ]);
@@ -101,7 +100,7 @@ class AuthStudentController extends Controller
         if ($request->filled('name')) $student->name = $request->name;
         if ($request->filled('surname')) $student->surname = $request->surname;
         if ($request->filled('email')) $student->email = $request->email;
-        if ($request->filled('id_group')) $student->id_group = $request->id_group;
+        if ($request->filled('group_id')) $student->group_id = $request->group_id;
         if ($request->filled('password')) $student->password = Hash::make($request->password);
 
         $student->save();
@@ -112,7 +111,7 @@ class AuthStudentController extends Controller
                 'name' => $student->name,
                 'surname' => $student->surname,
                 'email' => $student->email,
-                'id_group' => $student->id_group,
+                'group_id' => $student->group_id,
                 'token' => $request->bearerToken(),
                 'role' => 'student'
             ],

@@ -3,6 +3,7 @@ import {postLogin} from "../services/authServices.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
+import {PATHS} from "../config/path.js";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -30,8 +31,9 @@ export default function Login() {
 		postLogin(input, role)
 			.then((res) => {
 				const data = res.data;
+				const role = data.user.role.toUpperCase();
 				auth(data.user);
-				navigate("/profile");
+				navigate(PATHS[role].PROFILE);
 			})
 			.catch((error) => {
 				if (error.response) {
@@ -40,9 +42,11 @@ export default function Login() {
 					if (status >= 400 && status < 500) {
 						setErrors(data.errors || ["Произошла ошибка при входе"]);
 					} else {
+						setErrors(['Ошибка на сервере']);
 						console.error("Ошибка сервера (5xx) или иная:", status);
 					}
 				} else {
+					setErrors(['Ошибка сети']);
 					console.error("Ошибка сети или запроса:", error.message);
 				}
 			});
@@ -153,7 +157,7 @@ export default function Login() {
 								</div>
 								<p className="text-sm mt-6 text-center text-slate-600">Нет аккаунта?
 									<Link
-										to="/register"
+										to={PATHS.REGISTER}
 										className="text-blue-600 font-medium hover:underline ml-1 whitespace-nowrap"
 									>
 										Зарегистрироваться

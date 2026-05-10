@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
+import {PATHS} from "../config/path.js";
+import {useAuth} from "../context/AuthContext.jsx";
 
 const NotFound = () => {
+	const {user} = useAuth();
+
 	return (
 		<div className="h-screen justify-center">
-			<center class="pt-24 m-auto">
+			<center className="pt-24 m-auto">
 				<svg className="emoji-404 " enableBackground="new 0 0 226 249.135" height="249.135" id="Layer_1"
-					overflow="visible" version="1.1" viewBox="0 0 226 249.135" width="226" xml:space="preserve"><circle cx="113" cy="113" fill="#FFE585" r="109"/>
+					overflow="visible" version="1.1" viewBox="0 0 226 249.135" width="226" xmlSpace="preserve"><circle cx="113" cy="113" fill="#FFE585" r="109"/>
 					<line enableBackground="new    " fill="none" opacity="0.29" stroke="#1C398E" strokeLinecap="round"
 						strokeLinejoin="round" strokeWidth="8" x1="88.866" x2="136.866" y1="245.135" y2="245.135"/>
 					<line enableBackground="new    " fill="none" opacity="0.17" stroke="#6E6E96" strokeLinecap="round"
@@ -31,8 +35,8 @@ const NotFound = () => {
 
 				</div>
 			</center>
-			<center class="mt-6">
-				<Link to="/profile" className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md">
+			<center className="mt-6">
+				<Link to={PATHS[user.role.toUpperCase()].PROFILE} className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md">
 				Вернуться
 				</Link>
 			</center>

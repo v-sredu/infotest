@@ -65,9 +65,11 @@ export default function Profile() {
 				if (status >= 400 && status < 500) {
 					setErrors(data.errors || ["Произошла ошибка при входе"]);
 				} else {
+					setErrors(['Ошибка на сервере']);
 					console.error("Ошибка сервера (5xx) или иная:", status);
 				}
 			} else {
+				setErrors(['Ошибка сети']);
 				console.error("Ошибка сети или запроса:", error.message);
 			}
 		});
@@ -85,7 +87,7 @@ export default function Profile() {
 							d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
 					</svg>
 					<div className="mt-4 font-bold text-2xl">
-						{`${user.name} ${user.surname}`}
+						{user?.name || ''} {user?.surname || ''}
 					</div>
 				</div>
 			</div>
@@ -191,7 +193,7 @@ export default function Profile() {
 								<div className="relative flex items-center">
 									<select
 										id="group"
-										name="group"
+										name="group_id"
 										value={input.group_id}
 										onChange={handleInput}
 										className="w-full text-sm text-slate-900 border border-slate-300 px-4 py-3 rounded-md outline-blue-600 appearance-none cursor-pointer"

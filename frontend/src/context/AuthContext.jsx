@@ -1,6 +1,7 @@
 import {createContext, useContext, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {postLogOut} from "../services/authServices.jsx";
+import {PATHS} from "../config/path.js";
 
 const AuthContext = createContext({});
 
@@ -27,11 +28,13 @@ const AuthProvider = ({children}) => {
 
 	const logOut = () => {
 		postLogOut(user.role, user.token).then(() => {
-			setIsAuthenticated(false);
-			setUser({});
-			localStorage.clear();
-			navigate("/login");
+		}).catch((error) => {
+			console.error("Ошибка на сервере")
 		});
+		setIsAuthenticated(false);
+		setUser({});
+		localStorage.clear();
+		navigate(PATHS.LOGIN);
 	}
 
 	return (

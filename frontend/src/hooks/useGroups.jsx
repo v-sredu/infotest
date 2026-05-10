@@ -8,6 +8,5 @@ export const useGroups = () => {
 			.then(res => setGroups(res.data))
 			.catch(err => console.error("Ошибка групп", err));
 	}, []);
-
 	return { groups };
 };

@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.jsx";
 import {useGroups} from "../hooks/useGroups.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
+import {PATHS} from "../config/path.js";
 
 export default function Register() {
 	const {auth} = useAuth();
@@ -35,12 +36,12 @@ export default function Register() {
 	const submit = (e) => {
 		e.preventDefault();
 		setErrors([]);
-
 		postRegister(input, role)
 			.then((res) => {
 				const data = res.data;
+				const role = data.user.role.toUpperCase();
 				auth(data.user);
-				navigate("/profile");
+				navigate(PATHS[role].PROFILE);
 			})
 			.catch((error) => {
 				if (error.response) {
@@ -50,9 +51,11 @@ export default function Register() {
 					if (status >= 400 && status < 500) {
 						setErrors(data.errors || ["Произошла ошибка при входе"]);
 					} else {
+						setErrors(['Ошибка на сервере']);
 						console.error("Ошибка сервера (5xx) или иная:", status);
 					}
 				} else {
+					setErrors(['Ошибка сети']);
 					console.error("Ошибка сети или запроса:", error.message);
 				}
 			});
@@ -262,7 +265,7 @@ export default function Register() {
 								</div>
 								<p className="text-sm mt-6 text-center text-slate-600">Есть аккаунт?
 									<Link
-										to="/login"
+										to={PATHS.LOGIN}
 										className="text-blue-600 font-medium hover:underline ml-1 whitespace-nowrap"
 									>
 										Войти

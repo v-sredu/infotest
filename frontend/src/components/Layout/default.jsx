@@ -1,26 +1,27 @@
 import {useState} from "react";
 import {Link, Outlet} from 'react-router-dom';
 import {useAuth} from "../../context/AuthContext.jsx";
-import {navConfig} from "../../config/navConfig.jsx";
+import {navConfig} from "../../config/navConfig.js";
+import {PATHS} from "../../config/path.js";
 
 export default function Layout() {
-	const [isCollapsed, setIsCollapsed] = useState(true);
 	const width = window.innerWidth;
+	const [isCollapsed, setIsCollapsed] = useState(width < 1000);
 	const {user, logOut} = useAuth();
 	const menuItems = navConfig[user.role] || [];
 
 	return (
-		<div className="flex gap-5 text-gray-700">
+		<div className="flex text-gray-700 min-h-screen">
 			<aside
-				className={`flex flex-col h-screen border-r border-r-zinc-300 bg-white
-                ${isCollapsed ? 'w-20' : 'w-80'} ${width < 660 && !isCollapsed ? 'absolute z-100' : ''}`}>
+				className={`sticky top-0 self-start h-screen transition-all flex flex-col h-screen border-r border-r-zinc-300 bg-white
+                ${isCollapsed ? 'w-16' : 'w-80'} ${width < 660 && !isCollapsed ? 'absolute z-100' : ''}`}>
 				{/* Header */}
 				<div className="relative border-b border-b-zinc-300 px-4 py-3">
 					<div className="flex items-center space-x-3">
 						<img
 							src="https://plus.unsplash.com/premium_photo-1661962960694-0b4ed303744f?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 							alt="App Name Logo"
-							className="size-8 rounded-full"
+							className="size-8 rounded-full m-0"
 						/>
 						<span
 							className={`
@@ -47,8 +48,8 @@ export default function Layout() {
 				<nav className="flex-1 mt-2">
 					<ul className="px-2">
 						{menuItems.map((item, index) => (
-							<li key={index} className="line-clamp-1 p-2 hover:bg-zinc-200 hover:text-[#355C7D] rounded-md">
-								<Link to={item.path}>
+							<li key={index}>
+								<Link className='line-clamp-1 p-2 hover:bg-zinc-200 hover:text-[#355C7D] rounded-md' to={item.path}>
                                     {item.title}
 								</Link>
 							</li>
@@ -60,7 +61,7 @@ export default function Layout() {
 				{/* Footer/User Section */}
 				<div className="mt-auto border-t border-t-zinc-300">
 					{/* User Profile */}
-					<Link to={"/profile"}
+					<Link to={PATHS[user.role.toUpperCase()].PROFILE}
 						className="flex cursor-pointer items-center px-4 py-3 transition hover:bg-zinc-200">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
 							className="text-blue-900 h-8 w-8" viewBox="0 0 16 16">
@@ -96,7 +97,7 @@ export default function Layout() {
                           <span
 							  className={`text-xs text-gray-400 transition-opacity duration-200
                                   ${isCollapsed && 'hidden opacity-0'}`}>
-                            © 2025 MyApp
+                            © 2026 MyApp
                           </span>
 					</div>
 				</div>

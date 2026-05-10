@@ -13,7 +13,12 @@ return new class extends Migration
             $table->id('id');
             $table->string('name', 30);
             $table->string('description', 500);
+            $table->foreignId('teacher_id')
+                ->constrained('teachers', 'id')
+                ->onDelete('cascade');
             $table->timestamps();
+
+            $table->index('teacher_id');
         });
 
         // 2. Таблица tasks (теперь просто ссылается на тест)
@@ -33,8 +38,8 @@ return new class extends Migration
             $table->index('test_id');
         });
 
-        // 3. Таблица groups_tests (Связь Группы и Теста)
-        Schema::create('groups_tests', function (Blueprint $table) {
+        // 3. Таблица group_test (Связь Группы и Теста)
+        Schema::create('group_test', function (Blueprint $table) {
             $table->id('id');
             $table->foreignId('group_id')
                 ->constrained('groups', 'id')
@@ -63,13 +68,14 @@ return new class extends Migration
 
             $table->index('student_id');
             $table->index('test_id');
+
         });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('results');
-        Schema::dropIfExists('groups_tests');
+        Schema::dropIfExists('group_test');
         Schema::dropIfExists('tasks');
         Schema::dropIfExists('tests');
     }
